@@ -22,3 +22,17 @@ exports.updateTranslationCount = (userId, callback) => {
     });
   });
 };
+
+exports.getTranslationCount = (userId, callback) => {
+    db.query('SELECT translations FROM users WHERE id = ?', [userId], (error, results) => {
+      if (error) {
+        return callback(error, null);
+      }
+      if (results.length > 0) {
+        const translationsCount = results[0].translations || 0;
+        callback(null, translationsCount);
+      } else {
+        callback(null, 0); 
+      }
+    });
+  };
