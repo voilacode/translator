@@ -98,7 +98,6 @@ exports.translateText = async (req, res) => {
         });
       }
 
-      // Process user languages or default to all languages if none are set
       userLanguages = results[0].languages ? results[0].languages.split(',') : availableLanguages.map(lang => lang.code);
 
       if (result && result.data && result.data.translatedText) {

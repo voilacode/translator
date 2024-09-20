@@ -1,14 +1,13 @@
 const userModel = require('../models/userModel');
 
 exports.adminPage = (req, res) => {
-  const currentUser = req.session.user; // Get the logged-in user from session
+  const currentUser = req.session.user;   
 
   if (currentUser.role === 'user') {
     return res.redirect('/');
   }
 
-  // Fetch all users from the database
-  userModel.getAllUsers((err, results) => {
+  userModel.getUsersWithTranslationCount((err, results) => {
     if (err) {
       console.error(err);
       return res.redirect('/');

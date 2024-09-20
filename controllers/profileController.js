@@ -1,4 +1,5 @@
 const userModel = require('../models/userModel');
+const analyticsService = require('../services/analyticsService'); 
 
 exports.getProfile = (req, res) => {
   const userId = req.session.userId;
@@ -8,7 +9,14 @@ exports.getProfile = (req, res) => {
       return res.redirect('/login');
     }
 
-    const user = results[0]; 
-    res.render('profile', { user }); 
+    const user = results[0];
+
+    analyticsService.getTranslationCount(userId, (err, translationsCount) => {
+      if (err) {
+        translationsCount = 0; 
+      }
+
+      res.render('profile', { user, translationsCount });
+    });
   });
 };

@@ -35,6 +35,14 @@ exports.getUserByEmail = (email, callback) => {
   });
 };
 
+exports.getUsersWithTranslationCount = (callback) => {
+  const query = `
+    SELECT id, name, email, phone, role, gender, location, IFNULL(translations, 0) AS translationsCount
+    FROM users
+  `;
+  db.query(query, callback);
+};
+
 exports.updateLanguages = (id, languages, callback) => {
   const query = 'UPDATE users SET languages = ? WHERE id = ?';
   db.query(query, [languages, id], callback);

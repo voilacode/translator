@@ -1,42 +1,63 @@
-<!-- views/admin.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - User List</title>
-  <link href="/css/styles.css" rel="stylesheet">
+  <link rel="icon" href="https://talkao.com/wp-content/uploads/2022/09/augmented-reality-translate-icon.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-4">
-  <div class="max-w-4xl mx-auto bg-white shadow-md rounded-lg p-6">
-    <h1 class="text-2xl font-bold mb-4">User List</h1>
+<body class="bg-gray-900 text-white">
 
-    <table class="min-w-full border-collapse border border-gray-300">
-      <thead>
-        <tr>
-          <th class="border p-2">ID</th>
-          <th class="border p-2">Name</th>
-          <th class="border p-2">Phone</th>
-          <th class="border p-2">Email</th>
-          <th class="border p-2">Role</th>
-          <th class="border p-2">Gender</th>
-          <th class="border p-2">Location</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% users.forEach(user => { %>
-        <tr>
-          <td class="border p-2"><%= user.id %></td>
-          <td class="border p-2"><%= user.name %></td>
-          <td class="border p-2"><%= user.phone %></td>
-          <td class="border p-2"><%= user.email %></td>
-          <td class="border p-2"><%= user.role %></td>
-          <td class="border p-2"><%= user.gender %></td>
-          <td class="border p-2"><%= user.location %></td>
-        </tr>
-        <% }) %>
-      </tbody>
-    </table>
-  </div>
+  <!-- Navbar -->
+  <nav class="bg-gray-600 p-4 shadow-md">
+    <div class="max-w-screen-xl px-16 mx-auto flex justify-between items-center">
+      <h1 class="text-white text-2xl font-semibold"><a href="/" class="text-white">Text Translator</a></h1>
+      <div class="flex space-x-4">
+        <a href="/profile" class="text-white text-sm bg-gray-400 duration-300 ease-in-out hover:bg-orange-500 px-4 py-2 rounded">Profile</a>
+        <a href="/settings" class="text-white text-sm bg-gray-400 duration-300 ease-in-out hover:bg-orange-500 px-4 py-2 rounded">Settings</a>
+        <% if (currentUser && currentUser.role !== 'user') { %>  
+          <a href="/admin" class="text-white text-sm bg-gray-400 duration-300 ease-in-out hover:bg-orange-500 px-4 py-2 rounded">Admin</a>
+        <% } %>        
+        <a href="/logout" class="text-white text-sm bg-gray-400 duration-300 ease-in-out hover:bg-orange-500 px-4 py-2 rounded">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Admin Section: User List -->
+  <section class="max-w-screen-xl px-20 py-10 mx-auto">
+    <h1 class="text-3xl font-semibold mb-8 text-white">Admin - User List</h1>
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <% users.forEach(user => { %>
+        <div class="bg-gray-800 rounded-lg shadow-md p-6 flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-semibold text-white mb-4"><%= user.name %></h2>
+            <ul class="">
+              <li><span class="text-gray-400 font-semibold">Email:</span> <%= user.email %></li>
+              <li><span class="text-gray-400 font-semibold">Phone:</span> <%= user.phone %></li>
+              <li><span class="text-gray-400 font-semibold">Role:</span> <%= user.role %></li>
+              <li><span class="text-gray-400 font-semibold">Gender:</span> <%= user.gender %></li>
+              <li><span class="text-gray-400 font-semibold">Location:</span> <%= user.location %></li>
+            </ul>
+          </div>
+          
+          <!-- Analytics -->
+          <div class="relative w-36 h-36 mt-6 mx-auto">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+              <circle class="text-gray-300" stroke-width="4" stroke="currentColor" fill="none" r="16" cx="18" cy="18" />
+              <circle class="text-blue-600" stroke-width="4" stroke="currentColor" fill="none" r="16" cx="18" cy="18"
+                      stroke-dasharray="100" stroke-dashoffset="<%= 100 - (user.translationsCount / 100) * 100 %>" stroke-linecap="round" />
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="text-xl font-semibold text-blue-600"><%= user.translationsCount %>%</span>
+            </div>
+          </div>
+  
+        </div>
+      <% }) %>
+    </div>
+  </section>
+  
 </body>
 </html>
